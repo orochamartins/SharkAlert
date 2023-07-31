@@ -6,16 +6,26 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ContentView: View {
+    
+    @StateObject private var vm = ViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        ZStack{
+            Map(coordinateRegion: $vm.mapRegion, annotationItems: vm.locations) { location in
+                MapAnnotation(coordinate: location.coordinate) {
+                    Image(systemName: "star.circle")
+                        .resizable()
+                        .foregroundColor(.red)
+                        .frame(width: 44, height: 44)
+                        .background(.white)
+                        .clipShape(Circle())
+                }
+            }
+            .ignoresSafeArea()
         }
-        .padding()
     }
 }
 

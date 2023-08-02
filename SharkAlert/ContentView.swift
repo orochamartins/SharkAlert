@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import Combine
 
 struct ContentView: View {
     
@@ -25,6 +26,24 @@ struct ContentView: View {
                 }
             }
             .ignoresSafeArea()
+            
+            TargetMarker()
+            
+            VStack {
+                Spacer()
+                Button {
+                    
+                } label: {
+                    Image(systemName: "triangle")
+                    Text("Add Shark Event")
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding([.vertical], 24)
+                .background(.primary)
+                .cornerRadius(12)
+                .padding()
+            }
         }
     }
 }

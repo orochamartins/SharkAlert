@@ -30,7 +30,7 @@ struct TargetMarker: View {
                 .stroke(.primary, style: StrokeStyle(lineWidth: 8, lineCap: .round))
             
             Circle()
-                .fill(.primary)
+                .fill(.primary.opacity(0.5))
                 .frame(maxWidth: 10)
                 
         }

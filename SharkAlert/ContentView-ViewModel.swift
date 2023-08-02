@@ -14,8 +14,30 @@ extension ContentView {
         @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
         @Published var locations: [Location]
         
+        let savePath = FileManager.documentsDirectory.appendingPathExtension("SavedEvents")
+        
         init() {
-            locations = [Location.example]
+            do {
+                let data = try Data(contentsOf: savePath)
+                locations = try JSONDecoder().decode([Location].self, from: data)
+            } catch {
+                locations = []
+            }
+        }
+        
+        private func save() {
+            do {
+                let data = try JSONEncoder().encode(locations)
+                try data.write(to: savePath, options: [.atomic, .completeFileProtection])
+            } catch {
+                print("Unable to save data.")
+            }
+        }
+        
+        func addEvent() {
+            let newEvent = Location(id: UUID(), latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude)
+            locations.append(newEvent)
+            save()
         }
     }
 }

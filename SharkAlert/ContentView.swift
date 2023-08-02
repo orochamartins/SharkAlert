@@ -32,17 +32,19 @@ struct ContentView: View {
             VStack {
                 Spacer()
                 Button {
-                    
+                    vm.addEvent()
                 } label: {
-                    Image(systemName: "triangle")
-                    Text("Add Shark Event")
+                    HStack {
+                        Image(systemName: "triangle")
+                        Text("Add Shark Event")
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding([.vertical], 24)
+                    .background(.black)
+                    .cornerRadius(12)
+                    .padding()
                 }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding([.vertical], 24)
-                .background(.primary)
-                .cornerRadius(12)
-                .padding()
             }
         }
     }

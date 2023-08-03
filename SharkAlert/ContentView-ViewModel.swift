@@ -8,13 +8,19 @@
 import Foundation
 import MapKit
 
-extension ContentView {
     @MainActor class ViewModel: ObservableObject {
+        
+        @Published var isShowingSheet = false
         
         @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
         @Published var locations: [Location]
         
         let savePath = FileManager.documentsDirectory.appendingPathExtension("SavedEvents")
+        
+        //AddEventView Properties
+        @Published var eventType = ""
+        @Published var isSeen = false
+        @Published var isAttack = false
         
         init() {
             do {
@@ -40,4 +46,3 @@ extension ContentView {
             save()
         }
     }
-}

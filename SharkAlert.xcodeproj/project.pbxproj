@@ -15,6 +15,7 @@
 		7F0F2B8F2A786A7A008E00A1 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F2B8E2A786A7A008E00A1 /* Location.swift */; };
 		7F70147B2A7A9529004B548C /* TargetMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F70147A2A7A9529004B548C /* TargetMarker.swift */; };
 		7F70147D2A7AAE32004B548C /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F70147C2A7AAE32004B548C /* FileManager-DocumentsDirectory.swift */; };
+		7F7BA3DC2A7C552900581B73 /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BA3DB2A7C552900581B73 /* AddEventView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		7F0F2B8E2A786A7A008E00A1 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		7F70147A2A7A9529004B548C /* TargetMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetMarker.swift; sourceTree = "<group>"; };
 		7F70147C2A7AAE32004B548C /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
+		7F7BA3DB2A7C552900581B73 /* AddEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			children = (
 				7F0F2B7E2A78613B008E00A1 /* SharkAlertApp.swift */,
 				7F0F2B802A78613B008E00A1 /* ContentView.swift */,
+				7F7BA3DB2A7C552900581B73 /* AddEventView.swift */,
 				7F70147A2A7A9529004B548C /* TargetMarker.swift */,
 				7F0F2B8E2A786A7A008E00A1 /* Location.swift */,
 				7F0F2B8C2A786690008E00A1 /* ContentView-ViewModel.swift */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F70147D2A7AAE32004B548C /* FileManager-DocumentsDirectory.swift in Sources */,
+				7F7BA3DC2A7C552900581B73 /* AddEventView.swift in Sources */,
 				7F0F2B812A78613B008E00A1 /* ContentView.swift in Sources */,
 				7F0F2B8D2A786690008E00A1 /* ContentView-ViewModel.swift in Sources */,
 				7F0F2B8F2A786A7A008E00A1 /* Location.swift in Sources */,

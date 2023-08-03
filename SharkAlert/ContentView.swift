@@ -32,7 +32,7 @@ struct ContentView: View {
             VStack {
                 Spacer()
                 Button {
-                    vm.addEvent()
+                    vm.isShowingSheet.toggle()
                 } label: {
                     HStack {
                         Image(systemName: "triangle")
@@ -47,11 +47,18 @@ struct ContentView: View {
                 }
             }
         }
+        .environmentObject(vm)
+        .sheet(isPresented: $vm.isShowingSheet) {
+            AddEventView()
+                .presentationDetents([.fraction(0.45)])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(ViewModel())
     }
 }

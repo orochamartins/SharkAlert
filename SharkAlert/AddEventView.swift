@@ -13,65 +13,81 @@ struct AddEventView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            HStack {
+            VStack(alignment: .leading, spacing: 6) {
                 Text("Add Shark Event")
                     .font(.title2)
                     .fontWeight(.semibold)
                 
-                Spacer()
+                Text("Add a type and time of the occurrence")
+                    .foregroundColor(.secondary)
+                
             }
             
             VStack(alignment: .leading) {
-                HStack {
-                    Text("Select event type")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                }
-                
                 HStack(spacing: 16) {
-                    Group {
-                        VStack(spacing: 16) {
-                            Image(systemName: "square")
-                                .font(.largeTitle)
-                            Text("Shark seen")
-                                .font(.title2)
-                        }
-                        .contentShape(Rectangle())
-                        .foregroundColor(vm.eventType == "seen" ? .blue : .black)
-                        .onTapGesture {
-                            vm.eventType = "seen"
-                        }
-                        
-                        
-                        VStack(spacing: 16) {
-                            Image(systemName: "triangle")
-                                .font(.largeTitle)
-                            Text("Shark attack")
-                                .font(.title2)
-                        }
-                        .contentShape(Rectangle())
-                        .foregroundColor(vm.eventType == "attack" ? .blue : .black)
-                        .onTapGesture {
-                            vm.eventType = "attack"
-                        }
+                    VStack(spacing: 16) {
+                        Image(systemName: "square")
+                            .font(.largeTitle)
+                        Text("Shark seen")
+                            .font(.title2)
                     }
+                    .onTapGesture {
+                        vm.eventType = "seen"
+                    }
+                    .contentShape(Rectangle())
+                    .foregroundColor(.black)
                     .padding()
                     .frame(maxWidth: .infinity)
                     .overlay {
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(.secondary)
+                            .stroke(vm.eventType == "seen" ? .blue : .secondary)
                     }
-                    .padding(.vertical)
+                    .background(vm.eventType == "seen" ? .blue.opacity(0.2) : .white).cornerRadius(8)
+                    
+                    VStack(spacing: 16) {
+                        Image(systemName: "triangle")
+                            .font(.largeTitle)
+                        Text("Shark attack")
+                            .font(.title2)
+                    }
+                    .onTapGesture {
+                        vm.eventType = "attack"
+                    }
+                    .contentShape(Rectangle())
+                    .foregroundColor(.black)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(vm.eventType == "attack" ? .blue : .secondary)
+                    }
+                    .background(vm.eventType == "attack" ? .blue.opacity(0.2) : .white).cornerRadius(8)
+                }
+                
+                DatePicker("Select date", selection: $vm.currentDate, in: ...Date())
+                    .datePickerStyle(.wheel)
+                
+                Button {
+                    
+                } label: {
+                    HStack {
+                        Text("Add event")
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding([.vertical], 24)
+                    .background(.black)
+                    .cornerRadius(12)
                 }
             }
         }
         .padding()
     }
-}
-
-struct AddEventView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddEventView()
-            .environmentObject(ViewModel())
+    
+    struct AddEventView_Previews: PreviewProvider {
+        static var previews: some View {
+            AddEventView()
+                .environmentObject(ViewModel())
+        }
     }
 }

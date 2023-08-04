@@ -11,14 +11,17 @@ import MapKit
     @MainActor class ViewModel: ObservableObject {
         
         @Published var isShowingSheet = false
+        @Published var currentDate = Date.now
         
         @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
         @Published var locations: [Location]
         
         let savePath = FileManager.documentsDirectory.appendingPathExtension("SavedEvents")
         
-        //AddEventView Properties
+        //Event Type Button Properties
         @Published var eventType = ""
+        
+        //AddEventView Properties
         @Published var isSeen = false
         @Published var isAttack = false
         

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct TargetMarker: View {
+    
+    @EnvironmentObject var vm: ViewModel
+    
     var body: some View {
         ZStack {
             Circle()
@@ -43,5 +46,6 @@ struct TargetMarker: View {
 struct TargetMarker_Previews: PreviewProvider {
     static var previews: some View {
         TargetMarker()
+            .environmentObject(ViewModel())
     }
 }

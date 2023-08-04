@@ -35,22 +35,20 @@ struct ContentView: View {
                     vm.isShowingSheet.toggle()
                 } label: {
                     HStack {
-                        Image(systemName: "triangle")
-                        Text("Add Shark Event")
+                        Image(systemName: "plus")
+                            .font(.largeTitle)
                     }
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding([.vertical], 24)
+                    .frame(width: 80, height: 80)
                     .background(.black)
-                    .cornerRadius(12)
-                    .padding()
+                    .clipShape(Circle())
                 }
             }
         }
         .environmentObject(vm)
         .sheet(isPresented: $vm.isShowingSheet) {
             AddEventView()
-                .presentationDetents([.fraction(0.45)])
+                .presentationDetents([.fraction(0.85)])
                 .presentationDragIndicator(.visible)
         }
     }

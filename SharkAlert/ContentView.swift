@@ -17,12 +17,11 @@ struct ContentView: View {
         ZStack{
             Map(coordinateRegion: $vm.mapRegion, annotationItems: vm.locations) { location in
                 MapAnnotation(coordinate: location.coordinate) {
-                    Image(systemName: "star.circle")
-                        .resizable()
-                        .foregroundColor(.red)
-                        .frame(width: 44, height: 44)
-                        .background(.white)
-                        .clipShape(Circle())
+                    if location.eventType == "seen" {
+                        SeenMarker()
+                    } else {
+                        AttackMarker()
+                    }
                 }
             }
             .ignoresSafeArea()
@@ -48,6 +47,7 @@ struct ContentView: View {
         .environmentObject(vm)
         .sheet(isPresented: $vm.isShowingSheet) {
             AddEventView()
+                .environmentObject(vm)
                 .presentationDetents([.fraction(0.85)])
                 .presentationDragIndicator(.visible)
         }

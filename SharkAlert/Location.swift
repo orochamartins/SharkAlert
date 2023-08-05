@@ -12,10 +12,12 @@ struct Location: Identifiable, Codable {
     var id: UUID
     let latitude: Double
     let longitude: Double
+    let date: Date
+    let eventType: String
     
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
-    static let example = Location(id: UUID(), latitude: 51.501, longitude: -0.141)
+    static let example = Location(id: UUID(), latitude: 51.501, longitude: -0.141, date: Date(), eventType: "seen")
 }

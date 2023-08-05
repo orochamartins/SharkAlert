@@ -15,7 +15,7 @@ import MapKit
         
         @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
         @Published var locations: [Location]
-        
+      
         let savePath = FileManager.documentsDirectory.appendingPathExtension("SavedEvents")
         
         //Event Type Button Properties
@@ -44,8 +44,13 @@ import MapKit
         }
         
         func addEvent() {
-            let newEvent = Location(id: UUID(), latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude)
+            let newEvent = Location(id: UUID(), latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude, date: currentDate, eventType: eventType)
             locations.append(newEvent)
             save()
+            reset()
+        }
+        
+        func reset() {
+            eventType = ""
         }
     }

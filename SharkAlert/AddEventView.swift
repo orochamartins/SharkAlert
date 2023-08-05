@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddEventView: View {
     
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var vm: ViewModel
     
     var body: some View {
@@ -66,9 +67,12 @@ struct AddEventView: View {
                 
                 DatePicker("Select date", selection: $vm.currentDate, in: ...Date())
                     .datePickerStyle(.wheel)
+                    .labelsHidden()
                 
                 Button {
-                    
+                    vm.addEvent()
+                    dismiss()
+                    print(vm.locations)
                 } label: {
                     HStack {
                         Text("Add event")

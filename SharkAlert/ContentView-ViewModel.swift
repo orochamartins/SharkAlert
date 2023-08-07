@@ -12,6 +12,7 @@ import MapKit
         
         @Published var isShowingSheet = false
         @Published var currentDate = Date.now
+        @Published var selectedEvent: Location?
         
         @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
         @Published var locations: [Location]

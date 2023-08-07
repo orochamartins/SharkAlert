@@ -19,8 +19,14 @@ struct ContentView: View {
                 MapAnnotation(coordinate: location.coordinate) {
                     if location.eventType == "seen" {
                         SeenMarker()
+                        .onTapGesture {
+                            vm.selectedEvent = location
+                        }
                     } else {
                         AttackMarker()
+                        .onTapGesture {
+                            vm.selectedEvent = location
+                        }
                     }
                 }
             }
@@ -49,6 +55,11 @@ struct ContentView: View {
             AddEventView()
                 .environmentObject(vm)
                 .presentationDetents([.fraction(0.85)])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(item: $vm.selectedEvent) { event in
+            EventDetailsView(event: event)
+                .presentationDetents([.fraction(0.65)])
                 .presentationDragIndicator(.visible)
         }
     }

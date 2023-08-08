@@ -79,6 +79,7 @@ struct EventDetailsView: View {
             }
         }
         .padding()
+        .padding([.top])
     }
 }
 

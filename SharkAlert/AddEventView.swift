@@ -24,7 +24,7 @@ struct AddEventView: View {
                 
             }
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 16) {
                     VStack(spacing: 16) {
                         Image(systemName: "square")
@@ -68,6 +68,11 @@ struct AddEventView: View {
                 DatePicker("Select date", selection: $vm.currentDate, in: ...Date())
                     .datePickerStyle(.wheel)
                     .labelsHidden()
+                    .frame(maxWidth: .infinity)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.secondary.opacity(0.6))
+                    }
                 
                 Button {
                     vm.addEvent()
@@ -75,6 +80,7 @@ struct AddEventView: View {
                     print(vm.locations)
                 } label: {
                     HStack {
+                        Image(systemName: "plus")
                         Text("Add event")
                     }
                     .foregroundColor(.white)
@@ -86,6 +92,7 @@ struct AddEventView: View {
             }
         }
         .padding()
+        .padding([.top])
     }
     
     struct AddEventView_Previews: PreviewProvider {

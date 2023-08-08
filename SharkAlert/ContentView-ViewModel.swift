@@ -19,6 +19,10 @@ import MapKit
       
         let savePath = FileManager.documentsDirectory.appendingPathExtension("SavedEvents")
         
+        //Sheet height properties
+        @Published var addEventHeight: CGFloat = .zero
+        @Published var eventDetailsHeight: CGFloat = .zero
+        
         //Event Type Button Properties
         @Published var eventType = ""
         

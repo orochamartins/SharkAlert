@@ -14,54 +14,84 @@ struct ContentView: View {
     @StateObject private var vm = ViewModel()
     
     var body: some View {
-        ZStack{
-            Map(coordinateRegion: $vm.mapRegion, annotationItems: vm.locations) { location in
-                MapAnnotation(coordinate: location.coordinate) {
-                    if location.eventType == "seen" {
-                        SeenMarker()
-                        .onTapGesture {
-                            vm.selectedEvent = location
-                        }
-                    } else {
-                        AttackMarker()
-                        .onTapGesture {
-                            vm.selectedEvent = location
+        NavigationView {
+            ZStack{
+                Map(coordinateRegion: $vm.mapRegion, annotationItems: vm.locations) { location in
+                    MapAnnotation(coordinate: location.coordinate) {
+                        if location.eventType == "seen" {
+                            SeenMarker()
+                                .onTapGesture {
+                                    vm.selectedEvent = location
+                                }
+                        } else {
+                            AttackMarker()
+                                .onTapGesture {
+                                    vm.selectedEvent = location
+                                }
                         }
                     }
                 }
-            }
-            .ignoresSafeArea()
-            
-            TargetMarker()
-            
-            VStack {
-                Spacer()
-                Button {
-                    vm.isShowingSheet.toggle()
-                } label: {
-                    HStack {
-                        Image(systemName: "plus")
-                            .font(.largeTitle)
+                .ignoresSafeArea()
+                
+                TargetMarker()
+                
+                VStack {
+                    Spacer()
+                    Button {
+                        vm.isShowingSheet.toggle()
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus")
+                                .font(.largeTitle)
+                        }
+                        .foregroundColor(.white)
+                        .frame(width: 80, height: 80)
+                        .background(.black)
+                        .clipShape(Circle())
                     }
-                    .foregroundColor(.white)
-                    .frame(width: 80, height: 80)
-                    .background(.black)
-                    .clipShape(Circle())
+                }
+            }
+            .environmentObject(vm)
+            .sheet(isPresented: $vm.isShowingSheet) {
+                AddEventView()
+                    .overlay {
+                        GeometryReader { geometry in
+                            Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
+                        }
+                    }
+                    .onPreferenceChange(InnerHeightPreferenceKey.self) { newHeight in
+                        vm.addEventHeight = newHeight
+                    }
+                    .environmentObject(vm)
+                    .presentationDetents([.height(vm.addEventHeight)])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(item: $vm.selectedEvent) { event in
+                EventDetailsView(event: event)
+                    .overlay {
+                        GeometryReader { geometry in
+                            Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
+                        }
+                    }
+                    .onPreferenceChange(InnerHeightPreferenceKey.self) { newHeight in
+                        vm.eventDetailsHeight = newHeight
+                    }
+                    .presentationDetents([.height(vm.eventDetailsHeight)])
+                    .presentationDragIndicator(.visible)
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image(systemName: "triangle")
                 }
             }
         }
-        .environmentObject(vm)
-        .sheet(isPresented: $vm.isShowingSheet) {
-            AddEventView()
-                .environmentObject(vm)
-                .presentationDetents([.fraction(0.85)])
-                .presentationDragIndicator(.visible)
-        }
-        .sheet(item: $vm.selectedEvent) { event in
-            EventDetailsView(event: event)
-                .presentationDetents([.fraction(0.65)])
-                .presentationDragIndicator(.visible)
-        }
+    }
+}
+
+struct InnerHeightPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = .zero
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
     }
 }
 

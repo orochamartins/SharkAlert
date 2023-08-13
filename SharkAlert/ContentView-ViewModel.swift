@@ -7,8 +7,9 @@
 
 import Foundation
 import MapKit
+import SwiftUI
 
-    @MainActor class ViewModel: ObservableObject {
+    class ViewModel: ObservableObject {
         
         @Published var isShowingSheet = false
         @Published var currentDate = Date.now
@@ -57,5 +58,8 @@ import MapKit
         
         func reset() {
             eventType = ""
+            withAnimation {
+                mapRegion.span = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
+            }
         }
     }

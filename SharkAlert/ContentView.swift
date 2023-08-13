@@ -32,6 +32,14 @@ struct ContentView: View {
                     }
                 }
                 .ignoresSafeArea()
+                .onChange(of: vm.selectedEvent) { newValue in
+                    if let result = newValue?.coordinate {
+                        withAnimation {
+                            vm.mapRegion.center = CLLocationCoordinate2D(latitude: result.latitude - 0.85, longitude: result.longitude)
+                            vm.mapRegion.span = MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)
+                        }
+                    }
+                }
                 
                 TargetMarker()
                 
@@ -66,7 +74,7 @@ struct ContentView: View {
                     .presentationDetents([.height(vm.addEventHeight)])
                     .presentationDragIndicator(.visible)
             }
-            .sheet(item: $vm.selectedEvent) { event in
+            .sheet(item: $vm.selectedEvent, onDismiss: vm.reset) { event in
                 EventDetailsView(event: event)
                     .overlay {
                         GeometryReader { geometry in

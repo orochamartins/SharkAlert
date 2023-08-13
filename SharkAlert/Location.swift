@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-struct Location: Identifiable, Codable {
+struct Location: Identifiable, Codable, Equatable {
     var id: UUID
     let latitude: Double
     let longitude: Double

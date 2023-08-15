@@ -9,7 +9,7 @@ import Foundation
 import MapKit
 import SwiftUI
 
-    class ViewModel: ObservableObject {
+    class ViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         
         @Published var isShowingSheet = false
         @Published var currentDate = Date.now
@@ -19,6 +19,10 @@ import SwiftUI
         @Published var locations: [Location]
       
         let savePath = FileManager.documentsDirectory.appendingPathExtension("SavedEvents")
+        
+        //User location manager
+        
+        @Published var locationManager: CLLocationManager?
         
         //Sheet height properties
         @Published var addEventHeight: CGFloat = .zero
@@ -31,7 +35,7 @@ import SwiftUI
         @Published var isSeen = false
         @Published var isAttack = false
         
-        init() {
+        override init() {
             do {
                 let data = try Data(contentsOf: savePath)
                 locations = try JSONDecoder().decode([Location].self, from: data)
@@ -61,5 +65,42 @@ import SwiftUI
             withAnimation {
                 mapRegion.span = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
             }
+        }
+        
+        func centerUserLocation() {
+            withAnimation {
+                mapRegion = MKCoordinateRegion(center: locationManager?.location?.coordinate ?? CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
+            }
+        }
+        
+        func checkIfLocationManagerIsEnabled() {
+            if CLLocationManager.locationServicesEnabled() {
+                locationManager = CLLocationManager()
+                locationManager!.delegate = self
+            } else {
+                print("Turn location services on.")
+            }
+        }
+        
+        private func checkLocationAuthorization() {
+            guard let locationManager = locationManager else { return }
+            
+            switch locationManager.authorizationStatus {
+                
+            case .notDetermined:
+                locationManager.requestWhenInUseAuthorization()
+            case .restricted:
+                print("Your location is restricted. Check parental controls.")
+            case .denied:
+                print("You have denied this app location permission. Go into settings to change it.")
+            case .authorizedAlways, .authorizedWhenInUse:
+                mapRegion = MKCoordinateRegion(center: locationManager.location?.coordinate ?? CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
+            @unknown default:
+                break
+            }
+        }
+        
+        func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+            checkLocationAuthorization()
         }
     }

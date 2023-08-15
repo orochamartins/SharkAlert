@@ -16,7 +16,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack{
-                Map(coordinateRegion: $vm.mapRegion, annotationItems: vm.locations) { location in
+                Map(coordinateRegion: $vm.mapRegion, showsUserLocation: true, annotationItems: vm.locations) { location in
                     MapAnnotation(coordinate: location.coordinate) {
                         if location.eventType == "seen" {
                             SeenMarker()
@@ -32,6 +32,10 @@ struct ContentView: View {
                     }
                 }
                 .ignoresSafeArea()
+                .accentColor(.black)
+                .onAppear {
+                    vm.checkIfLocationManagerIsEnabled()
+                }
                 .onChange(of: vm.selectedEvent) { newValue in
                     if let result = newValue?.coordinate {
                         withAnimation {
@@ -43,21 +47,40 @@ struct ContentView: View {
                 
                 TargetMarker()
                 
-                VStack {
+                VStack(alignment: .customCenter) {
                     Spacer()
-                    Button {
-                        vm.isShowingSheet.toggle()
-                    } label: {
-                        HStack {
-                            Image(systemName: "plus")
-                                .font(.largeTitle)
+                    HStack(spacing: 16) {
+                        Button {
+                            vm.isShowingSheet.toggle()
+                        } label: {
+                            HStack {
+                                Image(systemName: "plus")
+                                    .font(.largeTitle)
+                            }
+                            .foregroundColor(.white)
+                            .frame(width: 80, height: 80)
+                            .background(.black)
+                            .clipShape(Circle())
                         }
-                        .foregroundColor(.white)
-                        .frame(width: 80, height: 80)
-                        .background(.black)
-                        .clipShape(Circle())
+                        .alignmentGuide(.customCenter) {
+                            $0[HorizontalAlignment.center]
+                        }
+                        
+                        Button {
+                            vm.centerUserLocation()
+                        } label: {
+                            HStack {
+                                Image(systemName: "location.fill")
+                                    .font(.title2)
+                            }
+                            .foregroundColor(.black)
+                            .frame(width: 48, height: 48)
+                            .background(.white)
+                            .clipShape(Circle())
+                        }
                     }
                 }
+                .frame(maxWidth: .infinity)
             }
             .environmentObject(vm)
             .sheet(isPresented: $vm.isShowingSheet) {

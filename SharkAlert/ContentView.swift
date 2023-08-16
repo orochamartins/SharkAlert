@@ -49,6 +49,10 @@ struct ContentView: View {
                 
                 VStack(alignment: .customCenter) {
                     Spacer()
+                    
+                    //Helper to position the "Plus Button" centered in the view
+                    Color.clear
+                        .frame(maxWidth: .infinity, maxHeight: 1)
                     HStack(spacing: 16) {
                         Button {
                             vm.isShowingSheet.toggle()
@@ -80,7 +84,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .frame(maxWidth: .infinity)
             }
             .environmentObject(vm)
             .sheet(isPresented: $vm.isShowingSheet) {

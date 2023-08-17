@@ -14,109 +14,109 @@ struct ContentView: View {
     @StateObject private var vm = ViewModel()
     
     var body: some View {
-        NavigationView {
-            ZStack{
-                Map(coordinateRegion: $vm.mapRegion, showsUserLocation: true, annotationItems: vm.locations) { location in
-                    MapAnnotation(coordinate: location.coordinate) {
-                        if location.eventType == "seen" {
-                            SeenMarker()
-                                .onTapGesture {
-                                    vm.selectedEvent = location
-                                }
-                        } else {
-                            AttackMarker()
-                                .onTapGesture {
-                                    vm.selectedEvent = location
-                                }
-                        }
+        ZStack{
+            Map(coordinateRegion: $vm.mapRegion, showsUserLocation: true, annotationItems: vm.locations) { location in
+                MapAnnotation(coordinate: location.coordinate) {
+                    if location.eventType == "seen" {
+                        SeenMarker()
+                            .onTapGesture { vm.selectedEvent = location }
+                    } else {
+                        AttackMarker()
+                            .onTapGesture { vm.selectedEvent = location }
                     }
                 }
-                .ignoresSafeArea()
-                .accentColor(.black)
-                .onAppear {
-                    vm.checkIfLocationManagerIsEnabled()
-                }
-                .onChange(of: vm.selectedEvent) { newValue in
-                    if let result = newValue?.coordinate {
-                        withAnimation {
-                            vm.mapRegion.center = CLLocationCoordinate2D(latitude: result.latitude - 0.85, longitude: result.longitude)
-                            vm.mapRegion.span = MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)
-                        }
+            }
+            .ignoresSafeArea()
+            .accentColor(.black)
+            .onAppear {
+                vm.checkIfLocationManagerIsEnabled()
+            }
+            .onChange(of: vm.selectedEvent) { newValue in
+                if let result = newValue?.coordinate {
+                    withAnimation {
+                        vm.mapRegion.center = CLLocationCoordinate2D(latitude: result.latitude - 0.75, longitude: result.longitude)
+                        vm.mapRegion.span = MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)
                     }
                 }
+            }
                 
-                TargetMarker()
+            TargetMarker()
+            
+            VStack {
+                Image(systemName: "triangle")
+                    .font(.title)
+                Spacer()
+            }
                 
-                VStack(alignment: .customCenter) {
-                    Spacer()
+            VStack(alignment: .customCenter) {
+                Spacer()
                     
-                    //Helper to position the "Plus Button" centered in the view
-                    Color.clear
-                        .frame(maxWidth: .infinity, maxHeight: 1)
-                    HStack(spacing: 16) {
-                        Button {
-                            vm.isShowingSheet.toggle()
-                        } label: {
-                            HStack {
-                                Image(systemName: "plus")
-                                    .font(.largeTitle)
-                            }
-                            .foregroundColor(.white)
-                            .frame(width: 80, height: 80)
-                            .background(.black)
-                            .clipShape(Circle())
+                //Helper to position the "Plus Button" centered in the view
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: 1)
+                HStack(spacing: 16) {
+                    Button {
+                        vm.isShowingSheet.toggle()
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus")
+                                .font(.largeTitle)
                         }
-                        .alignmentGuide(.customCenter) {
-                            $0[HorizontalAlignment.center]
-                        }
+                        .foregroundColor(.white)
+                        .frame(width: 80, height: 80)
+                        .background(.black)
+                        .clipShape(Circle())
+                    }
+                    .alignmentGuide(.customCenter) {
+                        $0[HorizontalAlignment.center]
+                    }
                         
-                        Button {
-                            vm.centerUserLocation()
-                        } label: {
-                            HStack {
-                                Image(systemName: "location.fill")
-                                    .font(.title2)
-                            }
-                            .foregroundColor(.black)
-                            .frame(width: 48, height: 48)
-                            .background(.white)
-                            .clipShape(Circle())
+                    Button {
+                        vm.centerUserLocation()
+                    } label: {
+                        HStack {
+                            Image(systemName: "location.fill")
+                                .font(.title2)
                         }
+                        .foregroundColor(.black)
+                        .frame(width: 48, height: 48)
+                        .background(.white)
+                        .clipShape(Circle())
                     }
                 }
             }
-            .environmentObject(vm)
-            .sheet(isPresented: $vm.isShowingSheet) {
-                AddEventView()
-                    .overlay {
-                        GeometryReader { geometry in
-                            Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
-                        }
+        }
+        .environmentObject(vm)
+        .sheet(isPresented: $vm.isShowingSheet) {
+            AddEventView()
+                .overlay {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
                     }
-                    .onPreferenceChange(InnerHeightPreferenceKey.self) { newHeight in
+                }
+                .onPreferenceChange(InnerHeightPreferenceKey.self) { newHeight in
                         vm.addEventHeight = newHeight
-                    }
-                    .environmentObject(vm)
-                    .presentationDetents([.height(vm.addEventHeight)])
-                    .presentationDragIndicator(.visible)
-            }
-            .sheet(item: $vm.selectedEvent, onDismiss: vm.reset) { event in
-                EventDetailsView(event: event)
-                    .overlay {
-                        GeometryReader { geometry in
-                            Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
-                        }
-                    }
-                    .onPreferenceChange(InnerHeightPreferenceKey.self) { newHeight in
-                        vm.eventDetailsHeight = newHeight
-                    }
-                    .presentationDetents([.height(vm.eventDetailsHeight)])
-                    .presentationDragIndicator(.visible)
-            }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image(systemName: "triangle")
                 }
+                .environmentObject(vm)
+                .presentationDetents([.height(vm.addEventHeight)])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(item: $vm.selectedEvent, onDismiss: vm.reset) { event in
+            EventDetailsView(event: event)
+                .overlay {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
+                    }
+                }
+                .onPreferenceChange(InnerHeightPreferenceKey.self) { newHeight in
+                    vm.eventDetailsHeight = newHeight
+                }
+                .presentationDetents([.height(vm.eventDetailsHeight)])
+                .presentationDragIndicator(.visible)
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Image(systemName: "triangle")
             }
         }
     }

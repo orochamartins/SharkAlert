@@ -9,6 +9,9 @@ import SwiftUI
 
 struct EventDetailsView: View {
     
+    @Environment(\.dismiss) var dismiss
+    @ObservedObject var vm: ViewModel
+    
     var event: Location
     
     var body: some View {
@@ -65,26 +68,50 @@ struct EventDetailsView: View {
             .frame(height: 150)
             
             Button {
-                
+                vm.isReported.toggle()
             } label: {
                 HStack {
-                    Image(systemName: "flag")
-                    Text("Report event")
+                    Image(systemName: vm.reportSent ? "checkmark" : "flag")
+                    Text(vm.reportSent ? "'\(vm.reportTitle)' report sent" : "Report event")
                 }
-                .foregroundColor(.red)
+                .foregroundColor(.red.opacity(vm.reportSent ? 0.6 : 1.0))
                 .frame(maxWidth: .infinity)
                 .padding([.vertical], 24)
-                .background(.red.opacity(0.2))
+                .background(.red.opacity(vm.reportSent ? 0.1 : 0.2))
                 .cornerRadius(12)
             }
+            .disabled(vm.reportSent)
         }
         .padding()
         .padding([.top])
+        .confirmationDialog("Report event", isPresented: $vm.isReported) {
+            Button("Wrong location", role: .destructive) {
+                withAnimation {
+                    vm.reportSent.toggle()
+                    vm.reportTitle = "Wrong location"
+                }
+            }
+            Button("Fake event", role: .destructive) {
+                withAnimation {
+                    vm.reportSent.toggle()
+                    vm.reportTitle = "Fake event"
+                }
+            }
+            Button("Event repeated", role: .destructive) {
+                withAnimation {
+                    vm.reportSent.toggle()
+                    vm.reportTitle = "Event repeated"
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Select a reason for the report")
+        }
     }
 }
 
 struct EventDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        EventDetailsView(event: Location.example)
+        EventDetailsView(vm: ViewModel(), event: Location.example)
     }
 }

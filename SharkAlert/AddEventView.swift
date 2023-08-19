@@ -10,7 +10,7 @@ import SwiftUI
 struct AddEventView: View {
     
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var vm: ViewModel
+    @ObservedObject var vm: ViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -97,8 +97,7 @@ struct AddEventView: View {
     
     struct AddEventView_Previews: PreviewProvider {
         static var previews: some View {
-            AddEventView()
-                .environmentObject(ViewModel())
+            AddEventView(vm: ViewModel())
         }
     }
 }

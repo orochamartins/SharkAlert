@@ -35,6 +35,11 @@ import SwiftUI
         @Published var isSeen = false
         @Published var isAttack = false
         
+        //EventDetailsView Properties
+        @Published var isReported = false
+        @Published var reportSent = false
+        @Published var reportTitle = ""
+        
         override init() {
             do {
                 let data = try Data(contentsOf: savePath)
@@ -62,6 +67,7 @@ import SwiftUI
         
         func reset() {
             eventType = ""
+            reportSent = false
             withAnimation {
                 mapRegion.span = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
             }

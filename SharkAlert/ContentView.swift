@@ -88,7 +88,7 @@ struct ContentView: View {
         }
         .environmentObject(vm)
         .sheet(isPresented: $vm.isShowingSheet) {
-            AddEventView()
+            AddEventView(vm: vm)
                 .overlay {
                     GeometryReader { geometry in
                         Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
@@ -97,12 +97,11 @@ struct ContentView: View {
                 .onPreferenceChange(InnerHeightPreferenceKey.self) { newHeight in
                         vm.addEventHeight = newHeight
                 }
-                .environmentObject(vm)
                 .presentationDetents([.height(vm.addEventHeight)])
                 .presentationDragIndicator(.visible)
         }
         .sheet(item: $vm.selectedEvent, onDismiss: vm.reset) { event in
-            EventDetailsView(event: event)
+            EventDetailsView(vm: vm, event: event)
                 .overlay {
                     GeometryReader { geometry in
                         Color.clear.preference(key: InnerHeightPreferenceKey.self, value: geometry.size.height)
@@ -132,6 +131,5 @@ struct InnerHeightPreferenceKey: PreferenceKey {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(ViewModel())
     }
 }

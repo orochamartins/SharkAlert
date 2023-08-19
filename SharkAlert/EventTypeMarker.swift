@@ -9,16 +9,31 @@ import SwiftUI
 
 struct SeenMarker: View {
     var body: some View {
-        Image(systemName: "triangle.fill")
-            .font(.largeTitle)
-            .foregroundColor(.yellow)
+        ZStack {
+            Image(systemName: "triangle.fill")
+                .font(.largeTitle)
+                .foregroundStyle(.linearGradient(colors: [.yellow, .orange], startPoint: .top, endPoint: .bottom))
+                .shadow(radius: 2.0)
+            Image(systemName: "exclamationmark.triangle")
+                .font(.largeTitle)
+                .foregroundColor(.white)
+        }
     }
 }
 
 struct AttackMarker: View {
     var body: some View {
-        Image(systemName: "hexagon.fill")
-            .font(.largeTitle)
-            .foregroundColor(.red)
+        ZStack {
+            Image(systemName: "hexagon.fill")
+                .font(.largeTitle)
+                .foregroundStyle(.linearGradient(colors: [.red, .pink], startPoint: .top, endPoint: .bottom))
+                .shadow(radius: 2.0)
+            Image(systemName: "hexagon")
+                .font(.largeTitle)
+                .foregroundColor(.white)
+            Image(systemName: "drop.fill")
+                .font(.subheadline)
+                .foregroundColor(.white)
+        }
     }
 }

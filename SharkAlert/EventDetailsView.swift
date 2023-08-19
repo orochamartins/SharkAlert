@@ -25,8 +25,10 @@ struct EventDetailsView: View {
                     
                     if event.eventType == "seen" {
                         SeenMarker()
+                            .scaleEffect(1.2)
                     } else {
                         AttackMarker()
+                            .scaleEffect(1.2)
                     }
                 }
                 .padding([.leading], 8)

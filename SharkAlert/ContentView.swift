@@ -20,9 +20,11 @@ struct ContentView: View {
                     if location.eventType == "seen" {
                         SeenMarker()
                             .onTapGesture { vm.selectedEvent = location }
+                            .scaleEffect(vm.selectedEvent == location ? 1.5 : 1.0).animation(Animation.easeInOut(duration: 1.0), value: vm.selectedEvent)
                     } else {
                         AttackMarker()
                             .onTapGesture { vm.selectedEvent = location }
+                            .scaleEffect(vm.selectedEvent == location ? 1.5 : 1.0).animation(Animation.easeInOut(duration: 1.0), value: vm.selectedEvent)
                     }
                 }
             }
@@ -66,6 +68,8 @@ struct ContentView: View {
                         .frame(width: 80, height: 80)
                         .background(.black)
                         .clipShape(Circle())
+                        .overlay(Circle().stroke(.white.opacity(0.5)))
+                        
                     }
                     .alignmentGuide(.customCenter) {
                         $0[HorizontalAlignment.center]
@@ -82,6 +86,7 @@ struct ContentView: View {
                         .frame(width: 48, height: 48)
                         .background(.white)
                         .clipShape(Circle())
+                        .shadow(radius: 2.0)
                     }
                 }
             }

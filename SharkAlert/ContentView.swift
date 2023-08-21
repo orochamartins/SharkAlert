@@ -120,7 +120,9 @@ struct ContentView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Image(systemName: "triangle")
+                Image("sharkAlert_logo")
+                    .resizable()
+                    .scaledToFill()
             }
         }
     }

@@ -27,42 +27,40 @@ struct AddEventView: View {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 16) {
                     VStack(spacing: 16) {
-                        Image(systemName: "square")
-                            .font(.largeTitle)
+                        SeenMarker()
                         Text("Shark seen")
                             .font(.title2)
                     }
+                    .contentShape(Rectangle())
+                    .foregroundColor(.black)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(vm.eventType == "seen" ? .yellow : .secondary)
+                    }
+                    .background(vm.eventType == "seen" ? .yellow.opacity(0.2) : .white).cornerRadius(8)
                     .onTapGesture {
                         vm.eventType = "seen"
                     }
-                    .contentShape(Rectangle())
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(vm.eventType == "seen" ? .blue : .secondary)
-                    }
-                    .background(vm.eventType == "seen" ? .blue.opacity(0.2) : .white).cornerRadius(8)
                     
                     VStack(spacing: 16) {
-                        Image(systemName: "triangle")
-                            .font(.largeTitle)
+                        AttackMarker()
                         Text("Shark attack")
                             .font(.title2)
                     }
-                    .onTapGesture {
-                        vm.eventType = "attack"
-                    }
                     .contentShape(Rectangle())
                     .foregroundColor(.black)
                     .padding()
                     .frame(maxWidth: .infinity)
                     .overlay {
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(vm.eventType == "attack" ? .blue : .secondary)
+                            .stroke(vm.eventType == "attack" ? .red : .secondary)
                     }
-                    .background(vm.eventType == "attack" ? .blue.opacity(0.2) : .white).cornerRadius(8)
+                    .background(vm.eventType == "attack" ? .red.opacity(0.2) : .white).cornerRadius(8)
+                    .onTapGesture {
+                        vm.eventType = "attack"
+                    }
                 }
                 
                 DatePicker("Select date", selection: $vm.currentDate, in: ...Date())
@@ -88,7 +86,9 @@ struct AddEventView: View {
                     .padding([.vertical], 24)
                     .background(.black)
                     .cornerRadius(12)
+                    .opacity(vm.eventType == "" ? 0.6 : 1.0)
                 }
+                .disabled(vm.eventType == "")
             }
         }
         .padding()

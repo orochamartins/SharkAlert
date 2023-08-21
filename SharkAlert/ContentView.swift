@@ -45,8 +45,10 @@ struct ContentView: View {
             TargetMarker()
             
             VStack {
-                Image(systemName: "triangle")
-                    .font(.title)
+                Image("sharkAlert_logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 180)
                 Spacer()
             }
                 
@@ -117,13 +119,6 @@ struct ContentView: View {
                 }
                 .presentationDetents([.height(vm.eventDetailsHeight)])
                 .presentationDragIndicator(.visible)
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Image("sharkAlert_logo")
-                    .resizable()
-                    .scaledToFill()
-            }
         }
     }
 }

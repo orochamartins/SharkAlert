@@ -80,13 +80,11 @@ import SwiftUI
         }
         
         func checkIfLocationManagerIsEnabled() {
-            DispatchQueue.global().async {
-                if CLLocationManager.locationServicesEnabled() {
-                    self.locationManager = CLLocationManager()
-                    self.locationManager!.delegate = self
-                } else {
-                    print("Turn location services on.")
-                }
+            if CLLocationManager.locationServicesEnabled() {
+                self.locationManager = CLLocationManager()
+                self.locationManager!.delegate = self
+            } else {
+                print("Turn location services on.")
             }
         }
         
